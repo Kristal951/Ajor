@@ -16,11 +16,11 @@ export default function SplashScreen() {
         await Font.loadAsync({
           "Geist-Regular": require("../assets/fonts/Geist/Geist-Regular.ttf"),
           "Geist-Bold": require("../assets/fonts/Geist/Geist-Bold.ttf"),
+          "Geist-SemiBold": require("../assets/fonts/Geist/Geist-SemiBold.ttf"),
           "Katanmruy-Regular": require("../assets/fonts/KantumruyPro/KantumruyPro-Regular.ttf"),
           "Katanmruy-Bold": require("../assets/fonts/KantumruyPro/KantumruyPro-Bold.ttf"),
+          "Katanmruy-SemiBold": require("../assets/fonts/KantumruyPro/KantumruyPro-SemiBold.ttf"),
         });
-
-        await Image.prefetch(require("../assets/Ajor.jpg"));
 
         setIsReady(true);
       } catch (error) {

@@ -48,7 +48,7 @@ export default function Onboarding3() {
           />
         </View>
 
-        <TouchableOpacity className="w-full p-4 bg-primary rounded-lg justify-center items-center">
+        <TouchableOpacity onPress={()=> router.push('/auth/')} className="w-full p-4 bg-primary rounded-lg justify-center items-center">
             <Text className="text-white text-normal">Get Started</Text>
          </TouchableOpacity>
       </View>
