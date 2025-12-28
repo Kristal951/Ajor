@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "89692094492",
+    "project_id": "ajor-6d7ec",
+    "storage_bucket": "ajor-6d7ec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89692094492:android:b187d5da6bacaa66c9dfd9",
+        "android_client_info": {
+          "package_name": "com.kristalDev.ajor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6UGjpdwMg8tUUvZ-uM_UCO2HjElGyFco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

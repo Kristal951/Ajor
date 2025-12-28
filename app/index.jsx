@@ -1,15 +1,25 @@
-import { Image, StyleSheet, View, ActivityIndicator } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  Image,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Animated,
+} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
-import "../global.css"
+import useUserStore from "../store/userStore";
+import "../global.css";
 
 export default function SplashScreen() {
   const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-   const [activeStep, setActiveStep] = useState(0);
-  const totalSteps = 3;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
+  const { user, initAuthListener } = useUserStore();
+  const [isReady, setIsReady] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load fonts
   useEffect(() => {
     const loadAssets = async () => {
       try {
@@ -21,10 +31,9 @@ export default function SplashScreen() {
           "Katanmruy-Bold": require("../assets/fonts/KantumruyPro/KantumruyPro-Bold.ttf"),
           "Katanmruy-SemiBold": require("../assets/fonts/KantumruyPro/KantumruyPro-SemiBold.ttf"),
         });
-
-        setIsReady(true);
       } catch (error) {
         console.warn("Failed to load assets:", error);
+      } finally {
         setIsReady(true);
       }
     };
@@ -33,26 +42,48 @@ export default function SplashScreen() {
   }, []);
 
   useEffect(() => {
-    if (isReady) {
-      const timer = setTimeout(() => {
-        if (router) {
-          router.replace("Onboarding");
-        }
-      }, 2500);
+    if (!isReady) return;
 
-      return () => clearTimeout(timer);
-    }
-  }, [isReady, router]);
+    const init = async () => {
+      await initAuthListener(); // waits until user is loaded or null
+      setHydrated(true);
+    };
+
+    init();
+  }, [isReady]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    console.log(hydrated);
+
+    const timer = setTimeout(() => {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }).start(() => {
+        if (!user) {
+          router.replace("/auth/Login");
+        } else if (user.hasPin) {
+          router.replace("/Verifications/VerifyPin");
+        } else {
+          router.replace("/screens");
+        }
+      });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [hydrated, user]);
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       <Image
-        source={require("../assets/Ajor.jpg")}
+        source={require("../assets/Ajor.png")}
         style={styles.logo}
         resizeMode="contain"
       />
       <ActivityIndicator size="large" color="#fff" />
-    </View>
+    </Animated.View>
   );
 }
 

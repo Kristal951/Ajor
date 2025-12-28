@@ -1,10 +1,51 @@
-import { TextInput, View, Text, TouchableOpacity } from "react-native";
+import {
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState } from "react";
+import useUserStore from "../store/userStore";
+import useToastStore from "../store/toastStore";
+import { useRouter } from "expo-router";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const isDisabled = !email || !password || !email.includes("@") || password.length < 6
+  const { login, loading } = useUserStore();
+  const { showToast } = useToastStore();
+  const router = useRouter()
+
+  const setFormEmpty = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const isDisabled =
+    !email || !password || !email.includes("@") || password.length < 6;
+
+  const handleSubmit = async () => {
+    if (isDisabled) return;
+
+    try {
+      const res = await login(email, password);
+      setFormEmpty();
+      showToast({
+        type: "success",
+        message: "Success!",
+        description: res || "Login successful.",
+      });
+      router.push('/Verifications/VerifyPin')
+    } catch (error) {
+      console.log("Login error:", error);
+      showToast({
+        type: "error",
+        message: "Error!",
+        description: error?.message || "Something went wrong.",
+      });
+    }
+  };
 
   return (
     <View className="w-full mt-12 gap-6">
@@ -27,18 +68,21 @@ export default function LoginForm() {
       />
 
       <View className="w-full items-end">
-        <Text className="text-black/50 font-katanmruy">
-          Forgot Password?
-        </Text>
+        <Text className="text-black/50 font-katanmruy">Forgot Password?</Text>
       </View>
 
       <TouchableOpacity
-        className={`${isDisabled ? 'bg-primary/30' : 'bg-primary'} p-4 flex justify-center items-center rounded-lg`}
-        disabled={isDisabled}
+        onPress={handleSubmit}
+        disabled={isDisabled || loading}
+        className={`p-4 flex justify-center items-center rounded-lg ${
+          isDisabled ? "bg-primary/30" : "bg-primary"
+        }`}
       >
-        <Text className="text-white text-normal font-katanmruy">
-          Log In
-        </Text>
+        {loading ? (
+          <ActivityIndicator color="#ffffff" />
+        ) : (
+          <Text className="text-white text-normal font-katanmruy">Log In</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

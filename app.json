@@ -9,7 +9,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/Ajor.jpg",
+      "image": "./assets/Ajor.png",
       "resizeMode": "contain",
       "backgroundColor": "#4CAF50"
     },
@@ -17,6 +17,8 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.kristalDev.ajor",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -30,6 +32,12 @@
     "plugins": [
       "expo-router",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "737148ba-3846-4e98-b5a7-2f9c3b1aa0d0"
+      }
+    }
   }
 }

@@ -11,9 +11,9 @@ import { useRouter } from "expo-router";
 import useUserStore from "../../store/userStore";
 import useToastStore from "../../store/toastStore";
 
-export default function CreatePin() {
+export default function VerifyPin() {
   const router = useRouter();
-  const { createUserPin, loading } = useUserStore();
+  const { verifyUser, loading, user } = useUserStore();
   const { showToast } = useToastStore();
 
   const [pin, setPin] = useState(["", "", "", ""]);
@@ -38,8 +38,19 @@ export default function CreatePin() {
   };
 
   const handleKeyPress = (e, index) => {
-    if (e.nativeEvent.key === "Backspace" && !pin[index] && index > 0) {
-      inputs.current[index - 1]?.focus();
+    if (e.nativeEvent.key === "Backspace") {
+      const newPin = [...pin];
+
+      if (pin[index] === "") {
+        if (index > 0) {
+          inputs.current[index - 1]?.focus();
+          newPin[index - 1] = "";
+          setPin(newPin);
+        }
+      } else {
+        newPin[index] = "";
+        setPin(newPin);
+      }
     }
   };
 
@@ -55,20 +66,21 @@ export default function CreatePin() {
     }
 
     try {
-      await createUserPin(pin.join(""));
+      await verifyUser(pin.join(""));
       router.replace({
         pathname: "/screens/AccountReadyScreen",
         params: {
-          title: `Your AJOR Account is ready`,
+          title: `Welcome Back ${user.name}`,
           subText:
-            "Your goals are still right where you left them. save the smart way with AjorYou can now start saving toward the things that matter to you, automatically or whEnever you want.",
-          buttonText: "View Dashboard",
+            "Your goals are still right where you left them. save the smart way with Ajor",
+            buttonText: 'Go to Dashboard'
         },
       });
+
       return showToast({
         type: "success",
         message: "Success!",
-        description: "Created Pin Succesffully.",
+        description: "Verified Your Pin Succesffully.",
       });
     } catch (error) {
       return showToast({
@@ -80,13 +92,13 @@ export default function CreatePin() {
   };
 
   return (
-    <View className="flex-1 px-6 mt-14">
+    <View className="flex-1 px-6 mt-10">
       <Text className="font-geistSemiBold mb-2 text-center text-semiBold">
-        Create a 4-digit PIN
+        Input your 4-digit PIN
       </Text>
 
       <Text className="text-center text-gray-500 text-small font-katanmruy">
-        Used for withdrawals and settings.
+        Input your 4-digit PIN to log into your Account.
       </Text>
 
       <View className="flex-row gap-4 justify-center mt-8">
