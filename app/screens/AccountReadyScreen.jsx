@@ -31,8 +31,7 @@ export default function AccountReadyScreen() {
 
     return <Text>{title}</Text>;
   };
-
-  // Helper for dynamic subText
+  
   const renderSubText = () => {
     if (subText.includes("Ajor")) {
       return (

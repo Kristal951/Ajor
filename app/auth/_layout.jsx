@@ -2,17 +2,36 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Slot, useRouter } from "expo-router";
+import { useGoogleSignIn } from "../../hooks/useGoogleSignIn";
+import useUserStore from "../../store/userStore";
 
 export default function AuthLayout() {
   const GoogleIcon = require("../../assets/Google_Icon.png");
   const AppleIcon = require("../../assets/Apple_Icon.png");
   const PhoneIcon = require("../../assets/Phone_Icon.png");
+  const { signInWithGoogle } = useGoogleSignIn();
+  const { signInWithGoogleInStore } = useUserStore();
 
   const OtherAuthenticationMethods = [
-    { label: "Continue With Google", icon: GoogleIcon },
-    { label: "Continue With Apple", icon: AppleIcon },
-    // { label: "Continue With Phone Number", icon: PhoneIcon },
+    {
+      label: "Continue With Google",
+      icon: GoogleIcon,
+      onPress: ()=> signInWithGoogleInStore(handleGoogleSignIn),
+    },
+    {
+      label: "Continue With Apple",
+      icon: AppleIcon,
+      onPress: ()=> handleGoogleSignIn,
+    },
   ];
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const user = await signInWithGoogle();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white" edges={["bottom"]}>
@@ -25,7 +44,7 @@ export default function AuthLayout() {
 
         <LinearGradient
           colors={["rgba(255,255,255,0)", "#FFFFFF"]}
-          locations={[0.2, 0.50]}
+          locations={[0.2, 0.5]}
           className="absolute top-0 w-full h-[70%]"
           pointerEvents="none"
         />
@@ -48,6 +67,7 @@ export default function AuthLayout() {
           <View className="mt-8 gap-4">
             {OtherAuthenticationMethods.map((method, index) => (
               <TouchableOpacity
+                onPress={method.onPress}
                 key={index}
                 className="p-4 rounded-lg flex-row items-center justify-center gap-4 bg-[#EBEBEB]"
               >
@@ -64,7 +84,6 @@ export default function AuthLayout() {
           </View>
         </ScrollView>
 
-        {/* Footer */}
         <View className="absolute bottom-4 w-full flex-row justify-between px-14">
           <Text className="text-black/30 text-sm">Privacy Policy</Text>
           <Text className="text-black/30 text-sm">Terms of Service</Text>

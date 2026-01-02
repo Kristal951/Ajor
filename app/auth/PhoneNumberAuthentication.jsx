@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, TouchableOpacity } from "react-native";
-import CountryPicker, {
-  Country,
-} from "react-native-country-picker-modal";
+import CountryPicker from "react-native-country-picker-modal";
 
 export default function PhoneInput() {
   const [countryCode, setCountryCode] = useState("NG");

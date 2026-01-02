@@ -43,7 +43,7 @@ const useUserStore = create((set, get) => ({
           emailVerified: false,
           hasPin: false,
         },
-        isAuthenticated: false, // 👈 important
+        isAuthenticated: false,
       });
 
       return "Signup successful! Please Create Your App Pin.";
@@ -85,10 +85,9 @@ const useUserStore = create((set, get) => ({
       const response = await API.get("/user/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       set({
         user: response.data.user,
-        isAuthenticated: true,
+        isAuthenticated: false,
       });
 
       return "Login successful!";
@@ -101,8 +100,8 @@ const useUserStore = create((set, get) => ({
         const msg = error.message.toLowerCase();
         if (msg.includes("user-not-found"))
           message = "No account found with this email.";
-        else if (msg.includes("wrong-password"))
-          message = "Incorrect password.";
+        else if (msg.includes("auth/network-request-failed"))
+          message = "Check Your internet connection.";
         else if (msg.includes("auth/invalid-credential"))
           message = "Incorrect credentials.";
         else message = error.message;
@@ -136,6 +135,7 @@ const useUserStore = create((set, get) => ({
 
       set((state) => ({
         user: { ...state.user, hasPin: true },
+        isAuthenticated: true,
       }));
 
       return "PIN created successfully!";
@@ -155,7 +155,7 @@ const useUserStore = create((set, get) => ({
   },
 
   // ================= VERIFY PIN =================
-  verifyUser: async (pin) => {
+  verifyUserPin: async (pin) => {
     set({ loading: true });
 
     try {
@@ -206,7 +206,7 @@ const useUserStore = create((set, get) => ({
     set({ loading: true });
 
     onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log(firebaseUser)
+      console.log(firebaseUser);
       if (!firebaseUser) {
         set({ user: null, firebaseUser: null, loading: false });
         return;
@@ -226,6 +226,20 @@ const useUserStore = create((set, get) => ({
         set({ user: null, loading: false });
       }
     });
+  },
+  signInWithGoogleInStore: async (Function) => {
+    try {
+      const user = await Function();
+      console.log(user);
+      // set({
+      //   firebaseUser: user,
+      //   user: { email: user.email, name: user.displayName },
+      //   isAuthenticated: true,
+      // });
+      return user;
+    } catch (err) {
+      throw err;
+    }
   },
 }));
 

@@ -12,7 +12,20 @@
           "package_name": "com.kristalDev.ajor"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "89692094492-1p5b2ogjp5d7gucv1k5h47pc59j06e6j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kristalDev.ajor",
+            "certificate_hash": "46100baa7b1c79d6390898d18dd72ed01557c93b"
+          }
+        },
+        {
+          "client_id": "89692094492-p8s3b30phebjag8kjttjt7t44r67h07f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC6UGjpdwMg8tUUvZ-uM_UCO2HjElGyFco"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89692094492-p8s3b30phebjag8kjttjt7t44r67h07f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

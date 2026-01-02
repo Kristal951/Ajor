@@ -45,7 +45,7 @@ export default function SignUpForm() {
           res.data.message ||
           "Your account has been created.",
       });
-      router.push("/Verifications/CreatePin");
+      router.push("/others/CreatePin");
     } catch (error) {
       console.log(error);
 

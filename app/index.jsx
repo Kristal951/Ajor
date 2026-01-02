@@ -65,7 +65,7 @@ export default function SplashScreen() {
         if (!user) {
           router.replace("/auth/Login");
         } else if (user.hasPin) {
-          router.replace("/Verifications/VerifyPin");
+          router.replace("/others/VerifyPin");
         } else {
           router.replace("/screens");
         }

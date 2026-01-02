@@ -4,20 +4,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import NavigationDots from "../../components/NavigationDots";
 import { useRouter } from "expo-router";
 import useOnboardingStore from "../../store/onboardingStore";
+import ArrowLeftButton from "../../components/ui/ArrowLeftButton";
+import ArrowRightButton from "../../components/ui/ArrowRightButton";
 
 export default function Onboarding2() {
   const router = useRouter();
-   const { activeStep, totalSteps, nextStep, prevStep, setActiveStep, skip } =
+  const { activeStep, totalSteps, nextStep, prevStep, setActiveStep, skip } =
     useOnboardingStore();
 
-  const moveToNextScreen =()=>{
-    nextStep() 
-    router.push('/Onboarding/Onboarding3')
-  }
-  const moveToPrevScreen =()=>{
-    prevStep() 
-    router.push('/Onboarding/Onboarding1')
-  }
+  const moveToNextScreen = () => {
+    nextStep();
+    router.push("/Onboarding/Onboarding3");
+  };
+  const moveToPrevScreen = () => {
+    prevStep();
+    router.push("/Onboarding/Onboarding1");
+  };
 
   return (
     <SafeAreaView
@@ -64,24 +66,8 @@ export default function Onboarding2() {
           </TouchableOpacity>
 
           <View className="flex flex-row gap-8">
-            <TouchableOpacity
-              onPress={moveToPrevScreen}
-              className="bg-primary w-[60px] h-[60px] rounded-full flex justify-center items-center"
-            >
-              <Image
-                source={require("../../assets/arrow_left.png")}
-                className="w-[12px] h-[21px]"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={moveToNextScreen}
-              className="bg-primary w-[60px] h-[60px] rounded-full flex justify-center items-center"
-            >
-              <Image
-                source={require("../../assets/arrow_right.png")}
-                className="w-[12px] h-[21px]"
-              />
-            </TouchableOpacity>
+            <ArrowLeftButton moveToPrevScreen={moveToPrevScreen} />
+            <ArrowRightButton moveToNextScreen={moveToNextScreen} />
           </View>
         </View>
       </View>

@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import NavigationDots from "../../components/NavigationDots";
 import { useRouter } from "expo-router";
 import useOnboardingStore from "../../store/onboardingStore";
+import ArrowLeftButton from "../../components/ui/ArrowLeftButton";
+import ArrowRightButton from "../../components/ui/ArrowRightButton";
 
 export default function Onboarding1() {
   const router = useRouter();
@@ -65,24 +67,8 @@ export default function Onboarding1() {
           </TouchableOpacity>
 
           <View className="flex flex-row gap-8">
-            <TouchableOpacity
-              onPress={moveToPrevScreen}
-              className="bg-primary w-[60px] h-[60px] rounded-full flex justify-center items-center"
-            >
-              <Image
-                source={require("../../assets/arrow_left.png")}
-                className="w-[12px] h-[21px]"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={moveToNextScreen}
-              className="bg-primary w-[60px] h-[60px] rounded-full flex justify-center items-center"
-            >
-              <Image
-                source={require("../../assets/arrow_right.png")}
-                className="w-[12px] h-[21px]"
-              />
-            </TouchableOpacity>
+            <ArrowLeftButton moveToPrevScreen={moveToPrevScreen} />
+            <ArrowRightButton moveToNextScreen={moveToNextScreen} />
           </View>
         </View>
       </View>

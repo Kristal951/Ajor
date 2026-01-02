@@ -36,7 +36,7 @@ export default function LoginForm() {
         message: "Success!",
         description: res || "Login successful.",
       });
-      router.push('/Verifications/VerifyPin')
+      router.push('/Others/VerifyPin')
     } catch (error) {
       console.log("Login error:", error);
       showToast({
@@ -67,9 +67,9 @@ export default function LoginForm() {
         autoCapitalize="none"
       />
 
-      <View className="w-full items-end">
+      <TouchableOpacity onPress={()=> router.push('/ForgotPassword')} className="w-full items-end">
         <Text className="text-black/50 font-katanmruy">Forgot Password?</Text>
-      </View>
+      </TouchableOpacity>
 
       <TouchableOpacity
         onPress={handleSubmit}

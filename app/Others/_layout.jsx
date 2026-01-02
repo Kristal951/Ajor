@@ -1,8 +1,8 @@
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Slot } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useRouter, useLocation } from "expo-router";
 
 export default function VerificationLayout() {
   const router = useRouter();
@@ -21,13 +21,13 @@ export default function VerificationLayout() {
           />
         </TouchableOpacity>
 
-        <View className="flex-1 items-center justify-center">
-          <Image
-            source={require("../../assets/Ajor_2.png")}
-            className="w-[80%] h-12"
-            resizeMode="contain"
-          />
-        </View>
+          <View className="flex-1 items-center justify-center">
+            <Image
+              source={require("../../assets/Ajor_2.png")}
+              className="w-[80%] h-12"
+              resizeMode="contain"
+            />
+          </View>
       </View>
 
       <View className="w-full flex-1 px-6 mt-8">

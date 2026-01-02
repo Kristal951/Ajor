@@ -10,51 +10,33 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "expo-router";
 import useUserStore from "../../store/userStore";
 import useToastStore from "../../store/toastStore";
+import CodeInput from "../../components/ui/CodeInput";
 
 export default function VerifyPin() {
   const router = useRouter();
-  const { verifyUser, loading, user } = useUserStore();
+  const { verifyUserPin, loading, user } = useUserStore();
   const { showToast } = useToastStore();
-
-  const [pin, setPin] = useState(["", "", "", ""]);
   const [focusedIndex, setFocusedIndex] = useState(null);
+  const [pin, setPin] = useState(["", "", "", ""]);
 
-  const inputs = useRef([]);
-
-  useEffect(() => {
-    inputs.current[0]?.focus();
-  }, []);
+  const isPinComplete = pin.every((digit) => digit !== "");
+  const inputsRef = useRef([]);
 
   const handleChange = (value, index) => {
     if (!/^\d?$/.test(value)) return;
-
     const newPin = [...pin];
     newPin[index] = value;
     setPin(newPin);
-
-    if (value && index < 3) {
-      inputs.current[index + 1]?.focus();
+    if (value && index < pin.length - 1) {
+      inputsRef.current[index + 1]?.focus();
     }
   };
 
   const handleKeyPress = (e, index) => {
-    if (e.nativeEvent.key === "Backspace") {
-      const newPin = [...pin];
-
-      if (pin[index] === "") {
-        if (index > 0) {
-          inputs.current[index - 1]?.focus();
-          newPin[index - 1] = "";
-          setPin(newPin);
-        }
-      } else {
-        newPin[index] = "";
-        setPin(newPin);
-      }
+    if (e.nativeEvent.key === "Backspace" && index > 0 && !pin[index]) {
+      inputsRef.current[index - 1]?.focus();
     }
   };
-
-  const isPinComplete = pin.every((digit) => digit !== "");
 
   const handleSubmit = async () => {
     if (!isPinComplete) {
@@ -66,14 +48,14 @@ export default function VerifyPin() {
     }
 
     try {
-      await verifyUser(pin.join(""));
+      await verifyUserPin(pin.join(""));
       router.replace({
         pathname: "/screens/AccountReadyScreen",
         params: {
           title: `Welcome Back ${user.name}`,
           subText:
             "Your goals are still right where you left them. save the smart way with Ajor",
-            buttonText: 'Go to Dashboard'
+          buttonText: "Go to Dashboard",
         },
       });
 
@@ -103,27 +85,16 @@ export default function VerifyPin() {
 
       <View className="flex-row gap-4 justify-center mt-8">
         {pin.map((digit, i) => (
-          <View
+          <CodeInput
             key={i}
-            className={`rounded-2xl w-[65px] h-[56px] p-[2px] flex items-center justify-center
-            
-        ${focusedIndex === i ? "border-2 border-black/10" : "bg-accent"}
-      `}
-          >
-            <TextInput
-              ref={(ref) => (inputs.current[i] = ref)}
-              value={digit}
-              maxLength={1}
-              keyboardType="number-pad"
-              onChangeText={(v) => handleChange(v, i)}
-              onKeyPress={(e) => handleKeyPress(e, i)}
-              onFocus={() => setFocusedIndex(i)}
-              className={`w-[98%]  h-full rounded-xl text-center text-3xl font-katanmruy      ${
-                digit ? "bg-white" : "bg-accent"
-              }`}
-              textAlign="center"
-            />
-          </View>
+            i={i}
+            pin={pin}
+            setPin={setPin}
+            digit={digit}
+            inputsRef={inputsRef}
+            handleChange={handleChange}
+            handleKeyPress={handleKeyPress}
+          />
         ))}
       </View>
 

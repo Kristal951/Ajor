@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 export default function NavigationDots({ total, activeIndex }) {
   return (
-    <View className="flex-row justify-center gap-2 items-center space-x-2 mt-4">
+    <View className="flex-row justify-center gap-2 items-center space-x-2 mt-4 px-6">
       {Array.from({ length: total }).map((_, index) => (
         <View
           key={index}

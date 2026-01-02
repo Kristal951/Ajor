@@ -1,13 +1,21 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ArrowRightButton from "../../components/ui/ArrowRightButton";
+import useOnboardingStore from "../../store/onboardingStore";
 
 export default function index() {
   const router = useRouter();
-  const moveToNextScreen =()=>{
-    router.push('/Onboarding/Onboarding1')
-  }
+  const moveToNextScreen = () => {
+    router.push("/Onboarding/Onboarding1");
+  };
+  const { activeStep, totalSteps, nextStep, prevStep, setActiveStep, skip } =
+    useOnboardingStore();
+
+  useEffect(() => {
+    setActiveStep(0);
+  }, [setActiveStep]);
 
   return (
     <SafeAreaView className="flex-1 justify-start items-start" edges={["top"]}>
@@ -28,18 +36,8 @@ export default function index() {
       </View>
 
       <View className="flex flex-col gap-10 w-full m-0 h-[51%]">
-        <View className="p-6 ">
-          <TouchableOpacity
-            onPress={moveToNextScreen}
-            className="bg-primary p-4 rounded-full w-[60px] h-[60px] flex justify-center items-center"
-          >
-            <Image
-              source={require("../../assets/arrow_right.png")}
-              className="w-[12px] h-[21px] "
-            />
-          </TouchableOpacity>
-        </View>
-      
+        <ArrowRightButton moveToNextScreen={moveToNextScreen} />
+
         <View className="h-full relative w-full bg-primary rounded-t-[20%] overflow-hidden">
           <Image
             source={require("../../assets/piggy-bank-holding-representation_1.png")}
